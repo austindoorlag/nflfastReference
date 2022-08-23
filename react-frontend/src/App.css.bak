@@ -1,0 +1,214 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.optionsContainer {
+	border-style:inset;
+	border-width:2px;
+	white-space: nowrap;
+	overflow: auto;
+	padding: 0px 20px 5px 20px;
+}
+
+
+.verticalLine {
+    border-left: 2px solid #acacac;
+    height: 320px;
+	display: inline;
+}
+
+.btn-primary {
+	display: inline;
+	background-color: #46E3FF;
+}
+
+.btn-reset {
+	display: inline;
+	background-color: #FFBF00;
+}
+
+#tableOptions {
+	display: inline-table;
+}
+
+label {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	max-width:200px;
+}
+
+table tra {
+	display: table-cell;
+}
+
+table tra tda {
+	display: block;
+}
+
+table th {
+	padding: 0px 20px 5px 20px;
+}
+
+
+
+.form-check {
+  vertical-align: bottom;
+  position: relative;
+  top: -1px;
+  *overflow: hidden;
+}
+
+.tabular {
+  width: 100%;
+  border-collapse: collapse;
+  border-width: 2px;
+  border-style:inset;
+  background-color: #353935;
+}
+
+.dataContainer {
+	white-space: nowrap;
+	overflow: auto;
+	padding: 15px 0px 00px 0px;
+}
+
+.buttonContainer {
+	padding: 5px 0px 00px 0px;
+}
+
+td {
+	border-left:1.5px inset #353935; 
+}
+
+th {
+	border-left:2px inset #353935; 
+	border-bottom: 2px inset #353935;
+	background-color: #F1F1F1;
+	font-size: 16px;
+}
+
+#addCondition {
+  background-color: #F1F1F1;
+  border: none;
+  width: 1px;
+  height: 1px;
+  padding: 15px 32px;
+  text-align: center;
+  color: #00008B;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+}
+
+
+#eptext1 {
+  font-size: 20px;
+}
+
+#eptext2 {
+  font-size: 16px;
+}
+
+#editHeader {
+  background-color: #F1F1F1;
+  width: 100%;
+  border-radius: 15px;
+  border: 2px solid #686868;
+  padding: 10px;
+}
+
+.restrictionEditRow {
+	white-space: nowrap;
+	overflow: auto;
+}
+
+#editAttributePopupMenu {
+  width: 100%;
+  border-radius: 15px;
+  border: 2px solid black;
+  padding: 20px;
+  background-color: #46E3FF;
+}
+
+#currentRestrictionsContainer {
+  width: 100%;
+  border-radius: 15px;
+  border: 2px solid black;
+  padding: 20px;
+  background-color: #F1F1F1;
+}
+
+#addRestriction {
+	border-radius: 5px;
+	border: 2px solid black;
+	background-color: #46E3FF;
+	width:25px;
+	height:25px;
+	padding: 0px 0px 15px 0px;
+}
+
+#subRestriction {
+	border-radius: 5px;
+	border: 2px solid black;
+	background-color: #FFBF00;
+	width:25px;
+	height:25px;
+	padding: 0px 0px 10px 0px;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+.footer {
+  position: fixed;
+  left:0;
+  bottom:0;
+  right:0;
+  width:100%;
+  height: 50px;
+  background-color: black;
+  text-align: center;
+  color: white;
+}

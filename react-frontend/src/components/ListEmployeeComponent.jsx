@@ -1,0 +1,387 @@
+import React, { Component } from 'react'
+
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+import Checkbox from "./Checkbox";
+
+import EmployeeService from '../services/EmployeeService'
+import data from "../mock-data.json";
+import AddAttributePopup from "./AddAttributePopup";
+
+
+const OPTIONS = Object.keys(data[0]);
+
+class ListEmployeeComponent extends Component {
+	
+	
+    constructor(props) {
+        super(props)
+
+        this.state = {
+				numToLoad: 50,
+				restrictions: [],
+				checkboxes: OPTIONS.reduce(
+						(options, option) => ({
+						...options,
+						[option]: false
+						})),
+        }
+		
+		this.buildRestrictionsJSON();
+		this.addCondition = this.addCondition.bind(this);
+		this.handleInputChange = this.handleInputChange.bind(this);
+		this.buildRestrictionsJSON = this.buildRestrictionsJSON.bind(this);
+    }
+	
+	callbackFunction = (childData) => {
+		const newArray = [...this.state.restrictions];
+		newArray.push(childData);
+		
+		this.setState({"restrictions": newArray})
+	}
+		
+	selectAllCheckboxes = isSelected => {
+    Object.keys(this.state.checkboxes).forEach(checkbox => {
+		this.setState(prevState => ({
+				checkboxes: {
+				...prevState.checkboxes,
+				[checkbox]: isSelected
+				}
+			}));
+		});
+	};
+	
+	getAllSelected() {
+		return OPTIONS.filter(checkbox => this.state.checkboxes[checkbox]);
+	}
+	
+	getAllUnselected() {
+		return OPTIONS.filter(x => !(this.getAllSelected().includes(x)));
+	}
+
+	selectAll = () => this.selectAllCheckboxes(true);
+
+	deselectAll = () => {
+		this.buildRestrictionsJSON();
+		this.selectAllCheckboxes(false);
+	}
+
+	
+	handleCheckboxChange = changeEvent => {
+    const { name } = changeEvent.target;
+
+    this.setState(prevState => ({
+		checkboxes: {
+			...prevState.checkboxes,
+			[name]: !prevState.checkboxes[name]
+		}
+		}));
+	};
+
+  generateHeadersFromCheckboxes() {
+	const headers = [];
+	
+    const selected = this.getAllSelected();
+	for (let i = 0; i < selected.length; i++) {
+		headers.push(this.createTableHeader(selected[i]));
+	}
+	return headers;
+	};
+	
+   generateDataFromCheckboxes() {
+	const tableContent = [];
+	
+    const selected = this.getAllUnselected();
+	let n = Math.min(data.length, this.state.numToLoad);
+	
+	for (let i = 0; i < n; i++) {
+		const newArray = {...data[i]};
+		//const newArray = data.map((x) => x)[i]; // Q: is this permantently deleting array entries? A: it sure is!  need a deep copy!
+
+		// Restrictions
+		var passRestrictions = true;
+		for (let j = 0; j < this.state.restrictions.length; j++) {
+			if ((this.state.restrictions[j])["gt"] == true) {
+				if (newArray[((this.state.restrictions[j])["field"])] <= (this.state.restrictions[j])["gtVal"]) {
+					console.log(newArray[((this.state.restrictions[j])["field"])]+" is less than "+(this.state.restrictions[j])["gtVal"])
+					passRestrictions = false;
+					break;
+				}
+			}
+			if ((this.state.restrictions[j])["lt"] == true) {
+				if (newArray[((this.state.restrictions[j])["field"])] >= (this.state.restrictions[j])["ltVal"]) {
+					console.log(newArray[((this.state.restrictions[j])["field"])]+" is great than "+(this.state.restrictions[j])["ltVal"])
+					passRestrictions = false;
+					break;
+				}
+			}
+			if ((this.state.restrictions[j])["eq"] == true) {
+				if (newArray[((this.state.restrictions[j])["field"])] != (this.state.restrictions[j])["gtVal"]) {
+					console.log(newArray[((this.state.restrictions[j])["field"])]+" not eq than "+(this.state.restrictions[j])["eqVal"])
+					passRestrictions = false;
+					break;
+				}
+			}
+		}
+		
+		if (!passRestrictions) {
+			continue;
+		}
+		
+		// Checkboxes
+		for (let j = 0; j < selected.length; j++) {
+			delete newArray[selected[j]];
+		}
+		
+		tableContent.push(this.createTableRowContent(Object.values(newArray)));
+	}
+	return tableContent;
+	};
+	
+	
+	createTableRowContent = (option  => (
+		<tr>
+			{this.createTableRowContentHelper(option)}
+		</tr> 
+	));
+	
+	createTableRowData = (option  => (
+		<td>
+			{option}
+		</td> 
+	));
+	
+	createTableRowContentHelper(arrayData) {
+		const dataEntries = [];
+		
+		for (let i = 0; i < data.length; i++) {
+			// Guard condition for non-selected checkboxes
+			if (!arrayData[i] && arrayData[i] != 0) {
+				continue;
+			}
+			
+			// Guard condition for ridiculous decimals.  Currently rounds to two decimal places.
+			if (typeof(arrayData[i]) == 'number') {
+				arrayData[i] = Math.round(arrayData[i] * 100) / 100;
+			}
+			dataEntries.push(this.createTableRowData(arrayData[i]));
+		}
+		return dataEntries;
+	};
+
+	createTableHeader = option => (
+		<th>
+			{option}
+			<Popup trigger={<button id="addCondition"> <b>+</b></button>} position="bottom center" className="modalPop" modal>
+				<AddAttributePopup id="AddAttributePopupMenu" field={option} dataString={isNaN(data[0][option])} parentCallback={this.callbackFunction} currentRestrictions={this.state.restrictions} />
+			</Popup>
+		</th> 
+	);
+	
+	
+	
+	createFiveCheckboxes = option => (
+		<tra>
+		<tda> <Checkbox
+			label={option[0]}
+			isSelected={this.state.checkboxes[option[0]]}
+			onCheckboxChange={this.handleCheckboxChange}
+			key={option[0]}
+		/> </tda>
+		<tda> <Checkbox
+			label={option[1]}
+			isSelected={this.state.checkboxes[option[1]]}
+			onCheckboxChange={this.handleCheckboxChange}
+			key={option[1]}
+		/> </tda>
+		<tda> <Checkbox
+			label={option[2]}
+			isSelected={this.state.checkboxes[option[2]]}
+			onCheckboxChange={this.handleCheckboxChange}
+			key={option[2]}
+		/> </tda>
+		<tda> <Checkbox
+			label={option[3]}
+			isSelected={this.state.checkboxes[option[3]]}
+			onCheckboxChange={this.handleCheckboxChange}
+			key={option[3]}
+		/> </tda>
+		<tda> <Checkbox
+			label={option[4]}
+			isSelected={this.state.checkboxes[option[4]]}
+			onCheckboxChange={this.handleCheckboxChange}
+			key={option[4]}
+		/> </tda>
+		</tra>
+	);
+	
+	createFourCheckboxes = option => (
+		<tra>
+		<tda> <Checkbox
+			label={option[0]}
+			isSelected={this.state.checkboxes[option[0]]}
+			onCheckboxChange={this.handleCheckboxChange}
+			key={option[0]}
+		/> </tda>
+		<tda> <Checkbox
+			label={option[1]}
+			isSelected={this.state.checkboxes[option[1]]}
+			onCheckboxChange={this.handleCheckboxChange}
+			key={option[1]}
+		/> </tda>
+		<tda> <Checkbox
+			label={option[2]}
+			isSelected={this.state.checkboxes[option[2]]}
+			onCheckboxChange={this.handleCheckboxChange}
+			key={option[2]}
+		/> </tda>
+		<tda> <Checkbox
+			label={option[3]}
+			isSelected={this.state.checkboxes[option[3]]}
+			onCheckboxChange={this.handleCheckboxChange}
+			key={option[3]}
+		/> </tda>
+		</tra>
+	);
+	
+	createThreeCheckboxes = option => (
+		<tra>
+		<tda> <Checkbox
+			label={option[0]}
+			isSelected={this.state.checkboxes[option[0]]}
+			onCheckboxChange={this.handleCheckboxChange}
+			key={option[0]}
+		/> </tda>
+		<tda> <Checkbox
+			label={option[1]}
+			isSelected={this.state.checkboxes[option[1]]}
+			onCheckboxChange={this.handleCheckboxChange}
+			key={option[1]}
+		/> </tda>
+		<tda> <Checkbox
+			label={option[2]}
+			isSelected={this.state.checkboxes[option[2]]}
+			onCheckboxChange={this.handleCheckboxChange}
+			key={option[2]}
+		/> </tda>
+		</tra>
+	);
+	
+	createTwoCheckboxes = option => (
+		<tra>
+		<tda> <Checkbox
+			label={option[0]}
+			isSelected={this.state.checkboxes[option[0]]}
+			onCheckboxChange={this.handleCheckboxChange}
+			key={option[0]}
+		/> </tda>
+		<tda> <Checkbox
+			label={option[1]}
+			isSelected={this.state.checkboxes[option[1]]}
+			onCheckboxChange={this.handleCheckboxChange}
+			key={option[1]}
+		/> </tda>
+		</tra>
+	);
+	
+	createOneCheckbox = option => (
+		<tra>
+		<tda> <Checkbox
+			label={option[0]}
+			isSelected={this.state.checkboxes[option[0]]}
+			onCheckboxChange={this.handleCheckboxChange}
+			key={option[0]}
+		/> </tda>
+		</tra>
+	);
+	
+	
+	generateCheckboxes = () => {
+		const newCheckBoxes = [];
+
+		for (let i = 0; i < OPTIONS.length; i += 5) {
+			const array = OPTIONS.slice(i, i + 5);
+			switch (array.length % 5) {
+				case 0:
+					newCheckBoxes.push(this.createFiveCheckboxes(array));
+					break;
+				case 1:
+					newCheckBoxes.push(this.createOneCheckbox(array));
+					break;
+				case 2:
+					newCheckBoxes.push(this.createTwoCheckboxes(array));
+					break;
+				case 3:
+					newCheckBoxes.push(this.createThreeCheckboxes(array));
+					break;
+				case 4:
+					newCheckBoxes.push(this.createFourCheckboxes(array));
+					break;
+				default:
+					break;
+			}
+		}
+		return <tbody>{newCheckBoxes}</tbody>;
+	}
+	
+	
+	addCondition() {
+		this.props.history.push('/add-employee/_add');
+	}
+	
+	handleInputChange(e) {
+		this.setState( {"numToLoad": document.getElementById('entries').value} );
+	}
+	
+	buildRestrictionsJSON() {
+		let newRestrictions = [];
+		for (let i = 0; i < OPTIONS.length; i++) {			
+			let newRestrictCol = {
+				"field": OPTIONS[i],
+				"gt": false,
+				"gtVal": null,
+				"lt": false,
+				"ltVal": null,
+				"eq": false,
+				"eqVal": null 
+			}
+			newRestrictions.push(newRestrictCol);
+		}
+		this.state.restrictions = newRestrictions;
+	}
+	
+	
+    render() {
+        return (
+            <div className="dataContent">
+				<br/>
+				<div className="optionsContainer">
+					<table id="tableOptions">
+						{this.generateCheckboxes()}
+					</table>
+				</div>
+				<div className="buttonContainer">
+					<button className="btn-primary" onClick={this.handleFormSubmit}>Reload</button> &nbsp;
+					<button className="btn-reset" onClick={this.deselectAll}>Reset</button> &nbsp;
+					<a> Entries to load: </a>
+					<input type="text" id="entries" name="entries" minlength="1" maxlength="8" size="1" onChange={this.handleInputChange}></input>
+				</div>
+                <div className = "dataContainer">
+                        <table className = "tabular">
+                            <thead>
+                                <tr>
+									{this.generateHeadersFromCheckboxes()}
+                                </tr>
+                            </thead>
+                            <tbody>
+								{this.generateDataFromCheckboxes()}
+                            </tbody>
+                        </table>
+
+                 </div>
+            </div>
+        )
+    }
+}
+
+export default ListEmployeeComponent
