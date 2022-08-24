@@ -1,9 +1,10 @@
-package net.javaguides.springboot.controller;
+package com.nflfastreference.springboot.controller;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.nflfastreference.springboot.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,9 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import net.javaguides.springboot.exception.ResourceNotFoundException;
-import net.javaguides.springboot.model.Employee;
-import net.javaguides.springboot.repository.EmployeeRepository;
+import com.nflfastreference.springboot.model.Employee;
+import com.nflfastreference.springboot.repository.EmployeeRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -28,7 +28,6 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeRepository employeeRepository;
 	
-	// get all employees
 	@GetMapping("/employees")
 	public List<Employee> getAllEmployees(){
 		return employeeRepository.findAll();

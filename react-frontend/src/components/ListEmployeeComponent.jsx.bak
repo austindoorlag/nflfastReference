@@ -66,6 +66,9 @@ class ListEmployeeComponent extends Component {
 		this.selectAllCheckboxes(false);
 	}
 
+	clearRestrictions = () => {
+		this.buildRestrictionsJSON();
+	}
 	
 	handleCheckboxChange = changeEvent => {
     const { name } = changeEvent.target;
@@ -361,7 +364,7 @@ class ListEmployeeComponent extends Component {
 					</table>
 				</div>
 				<div className="buttonContainer">
-					<button className="btn-primary" onClick={this.handleFormSubmit}>Reload</button> &nbsp;
+					<button className="btn-primary" onClick={this.clearRestrictions}>Reload</button> &nbsp;
 					<button className="btn-reset" onClick={this.deselectAll}>Reset</button> &nbsp;
 					<a> Entries to load: </a>
 					<input type="text" id="entries" name="entries" minlength="1" maxlength="8" size="1" onChange={this.handleInputChange}></input>

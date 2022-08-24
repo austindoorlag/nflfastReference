@@ -121,10 +121,6 @@ th {
   font-size: 16px;
 }
 
-#eptext3 {
-  font-size: 12px;
-}
-
 #editHeader {
   background-color: #F1F1F1;
   width: 100%;

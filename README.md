@@ -1,53 +1,33 @@
-# ReactJS-Spring-Boot-CRUD-Full-Stack-App - Course on YouTube
+<h1 style="text-align: center;">nflfastReference</h1>
 
-#### ReactJS + Spring Boot CRUD Full Stack App - 1 - Project Overview
-=> https://youtu.be/n43h1eJ2EUE
+---
+<h1> OVERVIEW </h1>
+<p> nflfastReference is a data application built to easily visualize and manipulate data related to the National Football League.  nflfastReference provides an alternative to the longer, more involved processes previously avaliable for NFL data analysis while sacrifing minimal functionality.  </P>
 
-#### ReactJS + Spring Boot CRUD Full Stack App - 2 - Project Architecture and Development Process
-=> https://youtu.be/iK__liBIXWk
-#### ReactJS + Spring Boot CRUD Full Stack App - 3 - Create Spring Boot Project and Configure MySQL
-=> https://youtu.be/k5KnAhkRzh4
-#### ReactJS + Spring Boot CRUD Full Stack App - 4 - Creating JPA Entity + Repository
-=> https://youtu.be/FZwLlaMmers
-#### ReactJS + Spring Boot CRUD Full Stack App - 5 - Creating List Employee REST API
-=> https://youtu.be/L57OlxU0fEE
-#### ReactJS + Spring Boot CRUD Full Stack App - 6 - Creating React App
-=> https://youtu.be/tUXiPfNKUWE
-#### ReactJS + Spring Boot CRUD Full Stack App - 7 - Add Bootstrap 4 in React App
-=> https://youtu.be/ArxBR9C1oNA
-#### ReactJS + Spring Boot CRUD Full Stack App - 8 - Creating React List Employee Component
-=> https://youtu.be/Tpt9t5IV7Vw
-#### ReactJS + Spring Boot CRUD Full Stack App - 9 - Connecting React with List Employee REST API
-=> https://youtu.be/zXE7dCidXhc
-#### ReactJS + Spring Boot CRUD Full Stack App - 10 - Add Header and Footer to React App
-=> https://youtu.be/LOcy9uFzBBU
-#### ReactJS + Spring Boot CRUD Full Stack App - 11 - Configure Routing
-=> https://youtu.be/z2QAbWy1A40
-#### ReactJS + Spring Boot CRUD Full Stack App - 12 - Creating Add Employee REST API
-=> https://youtu.be/1y3pOPNrGms
-#### ReactJS + Spring Boot CRUD Full Stack App - 13 - Creating React Add Employee Component
-=> https://youtu.be/E_7uVf0RCl4
-#### ReactJS + Spring Boot CRUD Full Stack App - 14 - React Add Employee Form Handling
-=> https://youtu.be/S5AFJIfRxQU
-#### ReactJS + Spring Boot CRUD Full Stack App - 15 - Connecting React with Add Employee REST API
-=> https://youtu.be/ieMhlyjPjWo
-#### ReactJS + Spring Boot CRUD Full Stack App - 16 - Creating Get Employee By Id REST API
-=> https://youtu.be/L5SYbfkOTQA
-#### ReactJS + Spring Boot CRUD Full Stack App - 17 - Creating Update Employee REST API
-=> https://youtu.be/voJAjtioNN8
-#### ReactJS + Spring Boot CRUD Full Stack App - 18 - Creating React Update Employee
-=> https://youtu.be/GrIG4-lnLkQ
-#### ReactJS + Spring Boot CRUD Full Stack App - 19 - Connecting React with Update Employee REST API
-=> https://youtu.be/uPCWBOrU6Vs
-#### ReactJS + Spring Boot CRUD Full Stack App - 20 - Add & Update Employee with Single React Component 
-=> https://youtu.be/ksvDBGF7JRE
-#### ReactJS + Spring Boot CRUD Full Stack App - 21 - Creating Delete Employee REST API 
-=> https://youtu.be/dzgixz4X1KA
-#### ReactJS + Spring Boot CRUD Full Stack App - 22 - Connecting React with Delete Employee REST API
-=> https://youtu.be/L6wM7x0fqZs
-#### ReactJS + Spring Boot CRUD Full Stack App - 23 - Creating React View Employee Component
-=> https://youtu.be/XRWnM51Cd7o
-#### ReactJS + Spring Boot CRUD Full Stack App - 24 - Design and Show Data on View Employee Page
-=> https://youtu.be/XRWnM51Cd7o
-#### ReactJS + Spring Boot CRUD Full Stack App - 25 - It's Demo Time and Source Code on GitHub
-=> https://youtu.be/FX5HE_gnOTI
+
+<h1> DEVELOPMENT </h1>
+<b>AS OF 8/21 DEVELOPMENT IS STILL ONGOING</b>
+<p> nflfastReference is built using React for the frotend and Java with Spring Boot for backend.  The bulk of the data manipulatation is done solely through the React frontend, while the Java library <a href="https://github.com/jbytecode/rcaller">RCaller</a> is used to pull visualize data from the <a href="https://github.com/nflverse/nflfastR">nflfastR</a> R package.</p>
+<p> Some interesting design questions that arose during the development process include:
+<ul>
+<li><b>Q:</b> Should the backend or frontend be responsible for manipulating data given a certain set of restrictions? <br/> <b>A:</b> The frontend handles almost all of the data filtration in this application.  There are certainly pros and cons to both approaches however:
+<ul>
+<li> <b>Pros:</b>
+<ul>
+<li> Performing client side data filtration improved performance time in almsot every case. </li>
+<li> Frontend remains quite cohesive </li>
+<li> Helped me learn React!  I am already perfectly comfortable in Java, so this was a good oppurtuinity to broaden my skills </li>
+</ul>
+<li> <b>Cons:</b>
+<ul>
+<li> Data manipulation is far more complicated (much more development time) in React when compared to R (accesses through Java & RCaller) </li>
+<li> Scalability is sacrificed (adding a new feature is far easier when you simply have to make an R call rather than implement your own manipulatations)</li>
+</ul>
+</ul>
+</li>
+
+</ul>
+</p>  
+
+<h1> REFLECTION </h1>
+<p> Throughout the creation of this application I have been extremely impressed with the power of React.  Following the design constraints is slightly challenging at first--because it forces you to have a 'plan of attack' when you start developing--but you are rewarded with simple, effective and beautiful frontend elements!</p>

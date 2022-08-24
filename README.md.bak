@@ -1,0 +1,16 @@
+<h1 style="text-align: center;">nflfastReference</h1>
+
+---
+<b>AS OF 8/21 DEVELOPMENT IS STILL ONGOING</b>
+<p> nflfastReference is a data application built to easily visualize and manipulate data related to the National Football League.  nflfastReference provides an alternative to the longer, more involved processes previously avaliable for NFL data analysis while sacrifing minimal functionality.  </P>
+
+
+<h1> Development </h1>
+
+<p> nflfastReference is built using React for the frotend and Java with Spring Boot for backend.  The bulk of the data manipulatation is done solely through the React frontend, while the Java library <a href="https://github.com/jbytecode/rcaller">RCaller</a> is used to pull visualize data from the <a href="https://github.com/nflverse/nflfastR">nflfastR</a> R package.</p>
+
+<p> Some interesting design questions that arose during the development process:
+<ul>
+<li> react</li>
+</ul>
+</p>  

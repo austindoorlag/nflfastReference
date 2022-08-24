@@ -9,6 +9,20 @@ class FooterComponent extends Component {
         }
     }
 	
+	buildFooter = () => (
+		<div>
+            <footer className = "footer">
+                <span className="text">nflfastReference</span> <br/>
+            </footer>
+        </div>
+	)
+	
+	getScroll() {
+		var scroll = $(window).scrollTop();
+		if (scroll > 5) {
+			return this.buildFooter;
+		} 
+	}
 
     render() {
         return (
