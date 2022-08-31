@@ -28,20 +28,6 @@
 	display: inline;
 }
 
-
-
-#gtTag {
-	visibility: hidden;
-}
-
-#ltTag {
-	visibility: hidden;
-}
-
-#eqTag {
-	visibility: hidden;
-}
-
 .btn-primary {
 	display: inline;
 	background-color: #46E3FF;
@@ -127,16 +113,25 @@ th {
 }
 
 
+.gtTag {
+	visibility: hidden;
+}
+
+.ltTag {
+	visibility: hidden;
+}
+
+.eqTag {
+	visibility: hidden;
+}
+
+
 #eptext1 {
   font-size: 20px;
 }
 
 #eptext2 {
   font-size: 16px;
-}
-
-#eptext3 {
-  font-size: 12px;
 }
 
 #editHeader {

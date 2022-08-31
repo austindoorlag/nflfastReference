@@ -7,23 +7,42 @@ class AddAttributePopup extends Component {
 	
     constructor(props) {
         super(props)
+		
+		let pGt;
+		let pGtVal;
+		let pLt;
+		let pLtVal;
+		let pEq;
+		let pEqVal;
+		for (let i = 0; i < this.props.currentRestrictions.length; i++) {
+			if ((this.props.currentRestrictions[i])["field"] == this.props.field) {
+				pGt = (this.props.currentRestrictions[i])["gt"];
+				pGtVal = (this.props.currentRestrictions[i])["gtVal"];
+				pLt = (this.props.currentRestrictions[i])["lt"];
+				pLtVal = (this.props.currentRestrictions[i])["ltVal"];
+				pEq = (this.props.currentRestrictions[i])["eq"];
+				pEqVal = (this.props.currentRestrictions[i])["eqVal"];
+				
+				break;
+			}
+		}
 
         this.state = {
               field: "",
-			  gt: "",
-			  gtVal: "",
-			  lt: "",
-			  ltVal: "",
-			  equal: "",
-			  equalVal: "",
+			  gt: pGt,
+			  gtVal: pGtVal,
+			  lt: pLt,
+			  ltVal: pLtVal,
+			  eq: pEq,
+			  eqVal: pEqVal,
 			  dataString: "",
 			  callbackFunction: "",
 			  currentRestrictions: []
         }
+		
 		this.addNewRestriction = this.addNewRestriction.bind(this);
 		this.subRestriction = this.subRestriction.bind(this);
 		this.dataStringRelationLoad = this.dataStringRelationLoad.bind(this);
-		this.saveRestrictions = this.saveRestrictions.bind(this);
     }
 	
 	sendData(newRestriction) {
@@ -43,7 +62,13 @@ class AddAttributePopup extends Component {
 	
 	filterData(cond) {
 		var relationDrop = document.getElementById("relation");
-		var relation = relationDrop.options[relationDrop.selectedIndex].value;
+		var relation;
+		if (relationDrop.nodeName == "SELECT") {
+			relation = relationDrop.options[relationDrop.selectedIndex].value;
+		} else {
+			relation = "eq";
+		}
+			
 		
 		var relationVal = document.getElementById("relationVal").value;
 		let newArray = [...this.props.currentRestrictions];
@@ -57,10 +82,9 @@ class AddAttributePopup extends Component {
 		}
 		
 		this.subRestriction(cond);
-		var addButton = document.getElementById("addRestriction");
-		addButton.style.display = "block";
 		this.sendData(newArray);
-		var tag = document.createElement("li");
+		
+		
 		
 		var relationChar = '';
 		if (relation == "gt") {
@@ -73,11 +97,11 @@ class AddAttributePopup extends Component {
 			relationChar = '=';
 		}
 		
-		var tagText = document.createTextNode(this.props.field+" "+relationChar+" "+relationVal);
-		tag.appendChild(tagText);
+		var tagText = (this.props.field+" "+relationChar+" "+relationVal);
 		
-		var element = document.getElementById("restrictionList");
-		element.appendChild(tag);
+		var element = document.getElementById(relation+"Tag");
+		element.innerHTML = tagText;
+		element.style.visibility = "visible";
 	}
 	
 	
@@ -91,7 +115,7 @@ class AddAttributePopup extends Component {
 			</select>);
 		} else {
 			return (
-			<a> = </a>
+			<a id="relation"> = </a>
 			);
 		}
 	}
@@ -109,16 +133,19 @@ class AddAttributePopup extends Component {
 		if (this.state.eq == "true") {
 			array.push(this.addRestriction("eq"));
 		}
+		
 		return array;
 	}
 	
 	subRestriction(cond) {
 		this.setState({[cond]: "false"});
+		var addButton = document.getElementById("addRestriction");
+		addButton.style.visibility = "visible";
 	}
 	
 	addNewRestriction() {
 		var addButton = document.getElementById("addRestriction");
-		addButton.style.display = "none";
+		addButton.style.visibility = "hidden";
 		
 		if (!(this.state.gt == "true") && !(this.props.dataString)) {
 			this.setState( {gt: "true"});
@@ -141,12 +168,29 @@ class AddAttributePopup extends Component {
 		this.subRestriction("gt");
 		this.subRestriction("lt");
 		this.subRestriction("eq");
+		
+		var element = document.getElementById("gtTag");
+		element.style.visibility = "hidden";
+		element = document.getElementById("ltTag");
+		element.style.visibility = "hidden";
+		element = document.getElementById("eqTag");
+		element.style.visibility = "hidden";
+		
+		let newArray = [...this.props.currentRestrictions];
+		
+		
+		for (let i = 0; i < newArray.length; i++) {
+			if ((newArray[i])["field"] == this.props.field) {
+				(newArray[i])["gt"] = false;
+				(newArray[i])["lt"] = false;
+				(newArray[i])["eq"] = false;
+			}
+		}
+		
+		this.sendData(newArray);
 	}
 	
-	saveRestrictions() {
-		console.log("ayy");
-	}
-	
+
 
     render() {
         return (
@@ -157,12 +201,16 @@ class AddAttributePopup extends Component {
 			</div>
 			<br/>
 			<div id="currentRestrictionsContainer">
-				<div id="restrictionList">
+				<div>
 					<button id="addRestriction" onClick={this.addNewRestriction}>+</button>
 					{this.buildRestrictionsList()} 
-					<ul id="restrictionList"/>
+					<ul id="restrictionList">
+					<li id="gtTag"/>
+					<li id="ltTag"/>
+					<li id="eqTag"/>
+					</ul>
 				</div>
-				<button className="btn-primary" onClick={this.saveRestrictions()}>Save</button> &nbsp;
+				<br/>
 				<button className="btn-reset" onClick={this.deselectAll}>Reset</button> &nbsp;
 			</div>
 		</div>

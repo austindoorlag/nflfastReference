@@ -36,8 +36,7 @@ class ListEmployeeComponent extends Component {
 	callbackFunction = (childData) => {
 		const newArray = [...this.state.restrictions];
 		newArray.push(childData);
-		
-		this.setState({"restrictions": newArray})
+		this.setState({"restrictions": newArray});
 	}
 		
 	selectAllCheckboxes = isSelected => {
@@ -103,21 +102,18 @@ class ListEmployeeComponent extends Component {
 		for (let j = 0; j < this.state.restrictions.length; j++) {
 			if ((this.state.restrictions[j])["gt"] == true) {
 				if (newArray[((this.state.restrictions[j])["field"])] <= (this.state.restrictions[j])["gtVal"]) {
-					console.log(newArray[((this.state.restrictions[j])["field"])]+" is less than "+(this.state.restrictions[j])["gtVal"])
 					passRestrictions = false;
 					break;
 				}
 			}
 			if ((this.state.restrictions[j])["lt"] == true) {
 				if (newArray[((this.state.restrictions[j])["field"])] >= (this.state.restrictions[j])["ltVal"]) {
-					console.log(newArray[((this.state.restrictions[j])["field"])]+" is great than "+(this.state.restrictions[j])["ltVal"])
 					passRestrictions = false;
 					break;
 				}
 			}
 			if ((this.state.restrictions[j])["eq"] == true) {
-				if (newArray[((this.state.restrictions[j])["field"])] != (this.state.restrictions[j])["gtVal"]) {
-					console.log(newArray[((this.state.restrictions[j])["field"])]+" not eq than "+(this.state.restrictions[j])["eqVal"])
+				if (newArray[((this.state.restrictions[j])["field"])] != (this.state.restrictions[j])["eqVal"]) {
 					passRestrictions = false;
 					break;
 				}
@@ -169,14 +165,27 @@ class ListEmployeeComponent extends Component {
 		return dataEntries;
 	};
 
+
+	
+	
 	createTableHeader = option => (
 		<th>
 			{option}
 			<Popup trigger={<button id="addCondition"> <b>+</b></button>} position="bottom center" className="modalPop" modal>
-				<AddAttributePopup id="AddAttributePopupMenu" field={option} dataString={isNaN(data[0][option])} parentCallback={this.callbackFunction} currentRestrictions={this.state.restrictions} />
+				<AddAttributePopup id="AddAttributePopupMenu" field={option} dataString={isNaN(data[0][option])} parentCallback={this.callbackFunction}
+				currentRestrictions={this.state.restrictions} gt={this.getFieldRestrictions(option, "gt")}/>
 			</Popup>
 		</th> 
 	);
+	
+	
+	getFieldRestrictions(stringField, val) {
+		for (let i = 0; i < this.state.restrictions.length; i++) {
+			if ((this.state.restrictions[i])["field"] == stringField) {
+				return ((this.state.restrictions[i])[val]);
+			}
+		}
+	}
 	
 	
 	
@@ -348,6 +357,10 @@ class ListEmployeeComponent extends Component {
 			newRestrictions.push(newRestrictCol);
 		}
 		this.state.restrictions = newRestrictions;
+	}
+	
+	handleFormSubmit() {
+		console.log(this.state.restrictions);
 	}
 	
 	
